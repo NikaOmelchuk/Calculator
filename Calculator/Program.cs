@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Calculator
 {
@@ -45,6 +46,70 @@ namespace Calculator
         }
     }
 
+public class Elementy
+    {
+        public List<string> rez = new List<string>(); 
+
+         public void PokazRez()
+        {
+            if (rez.Count == 0)
+            {
+                Console.WriteLine("Немає результатів.");
+            }
+            else
+            {
+                Console.WriteLine("Збережені результати:");
+                for (int i = 0; i < rez.Count; i++)
+                {
+                    Console.WriteLine(i + 1 + ". " + rez[i]);
+                }
+            }
+        }
+
+        public void YdalRez()
+        {
+            PokazRez();
+            if (rez.Count > 0)
+            {
+                Console.Write("Введiть номер результату для видалення: ");
+                int ind = Convert.ToInt32(Console.ReadLine()) - 1;
+
+                if (ind >= 0 && ind < rez.Count)
+                {
+                    rez.RemoveAt(ind);
+                    Console.WriteLine("Результат видалено.");
+                }
+                else
+                {
+                    Console.WriteLine("Неправильний індекс.");
+                }
+            }
+        }
+
+        public void ObnovRez()
+        {
+            PokazRez();
+            if (rez.Count > 0)
+            {
+                Console.Write("Введiть номер результату для оновлення: ");
+                int ind = int.Parse(Console.ReadLine()) - 1;
+
+                if (ind >= 0 && ind < rez.Count)
+                {
+                    Console.Write("Введiть нове значення: ");
+                    string newz = Console.ReadLine();
+                    rez[ind] = newz;
+                    Console.WriteLine("Результат оновлено.");
+                }
+                else
+                {
+                    Console.WriteLine("Неправильний індекс.");
+                }
+            }
+        }
+    }
+
+
     class Program
     {
         static void Main(string[] args)
@@ -53,6 +118,7 @@ namespace Calculator
             ProstOperatoin po = new ProstOperatoin();
             Korin kor = new Korin();
             Stepin st = new Stepin();
+            Elementy el = new Elementy();
 
             do
             {
@@ -60,7 +126,10 @@ namespace Calculator
                 Console.WriteLine("1 - Простi операцiї");
                 Console.WriteLine("2 - Корiнь числа");
                 Console.WriteLine("3 - Пiднесення числа до степеня");
-                Console.WriteLine("4 - Вихiд");
+                Console.WriteLine("4 - Показати результати");
+                Console.WriteLine("5 - Видалити результат");
+                Console.WriteLine("6 - Оновити результат");
+                Console.WriteLine("7 - Вихiд");
                 Console.WriteLine();
                 Console.Write("Введiть номер меню: ");
                 n = Console.ReadLine();
@@ -76,25 +145,52 @@ namespace Calculator
                         Console.Write("Введiть операцію (+,-,*,/): ");
                         string op = Console.ReadLine();
                         Console.WriteLine();
-                        Console.WriteLine("Результат: " + po.operation(Convert.ToDouble(a), Convert.ToDouble(b), Convert.ToChar(op)));
+                        string rez1 = po.operation(Convert.ToDouble(a), Convert.ToDouble(b), Convert.ToChar(op));
+                        Console.WriteLine("Результат: " + rez1);
+                        el.rez.Add(rez1);
                      break;
+
                      case "2":
                         Console.Write("Введiть число, яке хочете поставити пiд корiнь: ");
                         string k = Console.ReadLine();
                         Console.WriteLine();
-                        Console.WriteLine("Результат: " +kor.operation(Convert.ToDouble(k)));
+                        string rez2 = kor.operation(Convert.ToDouble(k));
+                        Console.WriteLine("Результат: " + rez2);
+                        el.rez.Add(rez2);
                      break;
+
                     case "3":
                         Console.Write("Введiть число, яке хочете поставити у степiнь: ");
                         string ch = Console.ReadLine();
                         Console.Write("Введiть число, яке буде степенем: ");
                         string stup = Console.ReadLine();
                         Console.WriteLine();
-                        Console.WriteLine("Результат: " + st.operation(Convert.ToDouble(ch), Convert.ToDouble(stup)));
+                        string rez3 = st.operation(Convert.ToDouble(ch), Convert.ToDouble(stup));
+                        Console.WriteLine("Результат: " + rez3);
+                        el.rez.Add(rez3);
+                        break;
+
+                        case "4":
+                        el.PokazRez(); 
+                        break;
+
+                        case "5":
+                        el.YdalRez(); 
+                        break;
+
+                        case "6":
+                        el.ObnovRez(); 
+                        break;
+
+                        case "7":
+                        break;
+
+                        default:
+                        Console.WriteLine("Невірний вибір!");
                         break;
                 }
 
-            } while (Convert.ToInt32(n) != 4);
+            } while (n != "7");
         }
     }
 }
